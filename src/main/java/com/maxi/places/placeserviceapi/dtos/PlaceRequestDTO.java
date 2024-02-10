@@ -10,6 +10,8 @@ import lombok.Setter;
 @Setter
 public class PlaceRequestDTO {
 
+    private Long id;
+
     @NotBlank
     private String name;
 
@@ -17,7 +19,10 @@ public class PlaceRequestDTO {
     private String slug;
 
     @NotBlank
-    private String status;
+    private String city;
+
+    @NotBlank
+    private String state;
 
     public PlaceRequestDTO() {
     }
@@ -25,13 +30,15 @@ public class PlaceRequestDTO {
     public PlaceRequestDTO(Place place) {
         this.name = place.getName();
         this.slug = place.getSlug();
-        this.status = place.getStatus();
+        this.state = place.getSlug();
+        this.city = place.getCity();
     }
 
-    public PlaceRequestDTO(String name, String slug, String status) {
+    public PlaceRequestDTO(String name, String slug, String state, String city) {
         this.name = name;
         this.slug = slug;
-        this.status = status;
+        this.state = state;
+        this.city = city;
     }
 
 }

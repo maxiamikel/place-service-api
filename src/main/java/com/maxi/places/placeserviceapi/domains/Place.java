@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -30,9 +31,14 @@ public class Place {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     private String name;
+    @NotBlank
     private String slug;
-    private String status;
+    @NotBlank
+    private String city;
+    @NotBlank
+    private String state;
 
     @Temporal(TemporalType.DATE)
     private LocalDate createAt;
