@@ -36,7 +36,7 @@ public class PlaceController {
     @GetMapping("/all")
     public ResponseEntity<?> findAll(
             @RequestParam(name = "pageNumber", required = false, defaultValue = "0") Integer pageNumber,
-            @RequestParam(name = "pageSize", required = false, defaultValue = "3") Integer pageSize) {
+            @RequestParam(name = "pageSize", required = false, defaultValue = "2") Integer pageSize) {
         Pageable page = PageRequest.of(pageNumber, pageSize);
         return ResponseEntity.ok().body(placeServieImplementation.findAll(page));
     }
@@ -57,8 +57,16 @@ public class PlaceController {
     }
 
     @GetMapping("/state/{state}")
-    public ResponseEntity<?> findByState(@PathVariable String state) {
-        return ResponseEntity.ok().body(placeServieImplementation.findByState(state));
+    public ResponseEntity<?> findByState(@PathVariable String state,
+            @RequestParam(name = "pageNumber", required = false, defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", required = false, defaultValue = "1") Integer pageSize) {
+        Pageable page = PageRequest.of(pageNumber, pageSize);
+        return ResponseEntity.ok().body(placeServieImplementation.findByState(state, page));
     }
 
+    @PutMapping("/delete/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        placeServieImplementation.delete(id);
+        return ResponseEntity.ok().body("Place ID [" + id + "] was successfully deleted");
+    }
 }

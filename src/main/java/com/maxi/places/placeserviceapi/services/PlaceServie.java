@@ -21,6 +21,6 @@ public interface PlaceServie {
 
     public PlaceResponseDTO findByName(String name);
 
-    public List<PlaceResponseDTO> findByState(String state);
+    public List<PlaceResponseDTO> findByState(String state, Pageable page);
 
 }

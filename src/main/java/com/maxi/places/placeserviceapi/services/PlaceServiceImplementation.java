@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import com.maxi.places.placeserviceapi.domains.Place;
 import com.maxi.places.placeserviceapi.dtos.PlaceRequestDTO;
 import com.maxi.places.placeserviceapi.dtos.PlaceResponseDTO;
+import com.maxi.places.placeserviceapi.enums.PlaceStatus;
 import com.maxi.places.placeserviceapi.repositories.PlaceRepository;
 
 public class PlaceServiceImplementation implements PlaceServie {
@@ -31,6 +32,7 @@ public class PlaceServiceImplementation implements PlaceServie {
             newPlace.setName(placeDTO.getName());
             newPlace.setSlug(placeDTO.getSlug());
             newPlace.setState(placeDTO.getState());
+            newPlace.setPlaceStatus(PlaceStatus.ACTIVE);
             newPlace.setCity(placeDTO.getCity());
             newPlace.setUpdateAt(LocalDate.now());
             placeRepository.save(newPlace);
@@ -44,7 +46,7 @@ public class PlaceServiceImplementation implements PlaceServie {
 
     @Override
     public List<PlaceResponseDTO> findAll(Pageable page) {
-        List<Place> placeList = placeRepository.findAll();
+        List<Place> placeList = placeRepository.findAll(page).toList();
         List<PlaceResponseDTO> placeResponseDTOs = new ArrayList<PlaceResponseDTO>();
         placeResponseDTOs = placeList.stream().map(p -> new PlaceResponseDTO(p)).collect(Collectors.toList());
         return placeResponseDTOs;
@@ -74,9 +76,9 @@ public class PlaceServiceImplementation implements PlaceServie {
 
     @Override
     public void delete(Long id) {
-        if (this.findPlaceById(id) != null) {
-            placeRepository.deleteById(id);
-        }
+        Place place = findPlaceById(id);
+        place.setPlaceStatus(PlaceStatus.NO_ACTIVE);
+        placeRepository.saveAndFlush(place);
     }
 
     @Override
@@ -102,7 +104,7 @@ public class PlaceServiceImplementation implements PlaceServie {
     }
 
     @Override
-    public List<PlaceResponseDTO> findByState(String state) {
+    public List<PlaceResponseDTO> findByState(String state, Pageable page) {
         List<Place> placeList = placeRepository.findByState(state);
         List<PlaceResponseDTO> placeListDTO = new ArrayList<PlaceResponseDTO>();
         placeListDTO = placeList.stream().map(p -> new PlaceResponseDTO(p)).collect(Collectors.toList());

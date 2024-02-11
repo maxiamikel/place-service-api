@@ -4,7 +4,11 @@ import java.time.LocalDate;
 
 import org.springframework.data.annotation.LastModifiedDate;
 
+import com.maxi.places.placeserviceapi.enums.PlaceStatus;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -39,6 +43,9 @@ public class Place {
     private String city;
     @NotBlank
     private String state;
+
+    @Enumerated(EnumType.STRING)
+    private PlaceStatus placeStatus;
 
     @Temporal(TemporalType.DATE)
     private LocalDate createAt;
